@@ -23,7 +23,7 @@ public class MnistPerceptronSplit {
     public static void main(String[] args) throws Exception {
     int batchSize = 128; // lote maior para carregar tudo em memória
     int rngSeed = 12345;
-    int numEpochs = 150;
+    int numEpochs = 10;
 
     System.out.println("Carregando todo o dataset MNIST na memória...");
         DataSetIterator mnistAll = new MnistDataSetIterator(batchSize, false, rngSeed);
@@ -69,23 +69,26 @@ public class MnistPerceptronSplit {
         scaler.transform(val);
         scaler.transform(test);
 
-        System.out.println("Construindo rede neural: 2 camadas densas (128, 64) + 10 neurônios de saída...");
-        MultiLayerConfiguration conf = new NeuralNetConfiguration.Builder()
-                .seed(rngSeed)
-                .optimizationAlgo(OptimizationAlgorithm.STOCHASTIC_GRADIENT_DESCENT)
-                .updater(new Adam(0.001))
-                .list()
-                .layer(new DenseLayer.Builder().nIn(28*28).nOut(128).activation(Activation.RELU).build())
-                .layer(new DenseLayer.Builder().nIn(128).nOut(64).activation(Activation.RELU).build())
-                .layer(new OutputLayer.Builder(LossFunctions.LossFunction.NEGATIVELOGLIKELIHOOD)
-                        .activation(Activation.SOFTMAX).nIn(64).nOut(10).build())
-                .build();
+    System.out.println("Construindo rede neural: 2 camadas densas (128, 64) + 10 neurônios de saída...");
+    MultiLayerConfiguration conf = new NeuralNetConfiguration.Builder()
+        .seed(rngSeed)
+        .optimizationAlgo(OptimizationAlgorithm.STOCHASTIC_GRADIENT_DESCENT)
+        .updater(new Adam(0.001))
+        .list()
+        .layer(new DenseLayer.Builder().nIn(28*28).nOut(128).activation(Activation.RELU).build())
+        .layer(new DenseLayer.Builder().nIn(128).nOut(64).activation(Activation.RELU).build())
+        .layer(new OutputLayer.Builder(LossFunctions.LossFunction.NEGATIVELOGLIKELIHOOD)
+            .activation(Activation.SOFTMAX).nIn(64).nOut(10).build())
+        .build();
 
         MultiLayerNetwork model = new MultiLayerNetwork(conf);
         model.init();
         model.setListeners(new ScoreIterationListener(20));
 
         System.out.println("Iniciando treinamento por " + numEpochs + " épocas...");
+        // Preparar para salvar acurácias
+        java.io.FileWriter csvWriter = new java.io.FileWriter("acuracia_epocas.csv");
+        csvWriter.append("epoca,treino,validacao,teste\n");
         for (int i = 0; i < numEpochs; i++) {
             System.out.println("Treinando época " + (i+1) + "...");
             model.fit(train);
@@ -129,7 +132,12 @@ public class MnistPerceptronSplit {
             }
             double accTeste = (double) acertosTeste / totalTeste;
             System.out.println("Acurácia teste após época " + (i+1) + ": " + accTeste + " (" + String.format("%.2f", accTeste*100) + "%)");
+
+            // Salvar no CSV
+            csvWriter.append((i+1) + "," + accTreino + "," + accVal + "," + accTeste + "\n");
         }
+        csvWriter.flush();
+        csvWriter.close();
 
     }
 }
