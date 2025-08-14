@@ -1,0 +1,28 @@
+# Java
+*.class
+*.jar
+*.war
+*.ear
+*.iml
+*.log
+*.ctxt
+*.hprof
+*.DS_Store
+*.swp
+*~
+# Maven
+/target/
+/logs/
+/.idea/
+/.classpath
+/.project
+/.settings/
+/.vscode/
+# OS
+Thumbs.db
+.DS_Store
+# Python venv (caso use para scripts)
+.venv/
+# CSV, imagens e resultados
+*.csv
+*.png
