@@ -2,6 +2,14 @@
 
 Este projeto implementa uma rede neural multicamadas (MLP) para classificação de dígitos manuscritos do dataset MNIST utilizando Java e a biblioteca Deeplearning4j (DL4J).
 
+## Histórico de Atualizações
+
+- **Adição de comentários detalhados no código Java**: O arquivo `MnistPerceptronSplit.java` agora possui comentários explicando cada objeto, variável e etapa do processo, facilitando o entendimento para novos usuários.
+- **Ajuste da arquitetura da rede**: Foram realizados testes com diferentes quantidades de camadas e neurônios, permitindo ao usuário personalizar facilmente a arquitetura no código.
+- **Padronização do número de épocas**: O número de épocas de treinamento pode ser ajustado diretamente no início do arquivo Java, tornando a experimentação mais simples.
+- **Geração automática de CSV**: A cada execução do treinamento, um novo arquivo `acuracia_epocas.csv` é gerado, contendo as acurácias de treino, validação e teste por época.
+- **Script Python para gráficos**: O arquivo `plot_acuracia.py` foi criado para ler o CSV e gerar automaticamente o gráfico de evolução da acurácia.
+
 ## Estrutura do Projeto
 
 - `src/main/java/`: Código-fonte principal Java
@@ -9,6 +17,14 @@ Este projeto implementa uma rede neural multicamadas (MLP) para classificação 
 - `acuracia_epocas.csv`: Resultados de acurácia por época
 - `acuracia_epocas.png`: Gráfico da evolução da acurácia
 - `plot_acuracia.py`: Script Python para plotar o gráfico
+
+## Estrutura do Projeto
+
+- `src/main/java/`: Código-fonte principal Java, incluindo o arquivo `MnistPerceptronSplit.java`.
+- `dataset/`: Imagens do MNIST.
+- `acuracia_epocas.csv`: Resultados de acurácia por época, gerado automaticamente após cada treinamento.
+- `acuracia_epocas.png`: Gráfico da evolução da acurácia, gerado pelo script Python.
+- `plot_acuracia.py`: Script Python para plotar o gráfico a partir do CSV.
 
 ## Como funciona
 
@@ -52,6 +68,5 @@ O gráfico será salvo como `acuracia_epocas.png`.
 - [Deeplearning4j](https://deeplearning4j.konduit.ai/)
 - [MNIST Dataset](http://yann.lecun.com/exdb/mnist/)
 
----
 
 **Autor:** Leonardo Belluzzi
